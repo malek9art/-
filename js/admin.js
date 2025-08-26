@@ -445,6 +445,8 @@ function editTestimonialItem(id) {
 
 // تهيئة لوحة التحكم
 function initAdminPanel() {
+    console.log('تهيئة لوحة التحكم...');
+    
     // تحميل بيانات لوحة التحكم
     loadAdminPanel();
     
@@ -463,8 +465,12 @@ function initAdminPanel() {
             const isLoggedIn = localStorage.getItem('malekArtLoggedIn') === 'true';
             if (isLoggedIn) {
                 document.getElementById('adminDashboard').style.display = 'block';
+                console.log('فتح لوحة التحكم من زر الإعدادات');
             } else {
-                adminLoginModal.style.display = 'flex';
+                if (adminLoginModal) {
+                    adminLoginModal.style.display = 'flex';
+                    console.log('فتح نافذة تسجيل الدخول من زر الإعدادات');
+                }
             }
         });
     }
@@ -473,6 +479,7 @@ function initAdminPanel() {
     if (adminDashboardClose) {
         adminDashboardClose.addEventListener('click', function() {
             document.getElementById('adminDashboard').style.display = 'none';
+            console.log('إغلاق لوحة التحكم');
         });
     }
     
@@ -513,23 +520,31 @@ function initAdminPanel() {
             // إظهار المحتوى المحدد
             const tabId = this.getAttribute('data-tab');
             document.getElementById(`${tabId}Content`).classList.add('active');
+            
+            console.log('تم التبديل إلى تبويب:', tabId);
         });
     });
+    
+    console.log('تم تهيئة لوحة التحكم بنجاح');
 }
 
-// تهيئة لوحة التحكم عند تحميل الصفحة
-document.addEventListener('DOMContentLoaded', function() {
-    // تهيئة لوحة التحكم إذا كان المستخدم مسجلاً
-    const isLoggedIn = localStorage.getItem('malekArtLoggedIn') === 'true';
-    if (isLoggedIn) {
-        initAdminPanel();
-    }
-    
-    // إضافة event listener لتسجيل الدخول الناجح
-    window.addEventListener('loginSuccess', function() {
-        initAdminPanel();
-    });
+// تهيئة لوحة التحكم عند تسجيل الدخول
+window.addEventListener('loginSuccess', function() {
+    console.log('تم تسجيل الدخول، تهيئة لوحة التحكم...');
+    initAdminPanel();
 });
+
+// جعل الدوال متاحة globally
+window.addPortfolioItem = addPortfolioItem;
+window.addServiceItem = addServiceItem;
+window.addTestimonialItem = addTestimonialItem;
+window.saveContactInfo = saveContactInfo;
+window.deletePortfolioItem = deletePortfolioItem;
+window.deleteServiceItem = deleteServiceItem;
+window.deleteTestimonialItem = deleteTestimonialItem;
+window.editPortfolioItem = editPortfolioItem;
+window.editServiceItem = editServiceItem;
+window.editTestimonialItem = editTestimonialItem;
 
 // تصدير الدوال للاستخدام في ملفات أخرى
 if (typeof module !== 'undefined' && module.exports) {
