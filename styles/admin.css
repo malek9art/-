@@ -1,0 +1,211 @@
+/* لوحة التحكم */
+.admin-panel {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 999;
+}
+
+.admin-btn {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--gold) 0%, #c6950e 100%);
+    color: var(--dark-blue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.admin-btn:hover {
+    transform: scale(1.1) rotate(15deg);
+}
+
+.admin-login-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-login-form {
+    background: var(--white);
+    padding: 2.5rem;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.admin-login-form h2 {
+    text-align: center;
+    color: var(--dark-blue);
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+}
+
+.admin-form-group {
+    margin-bottom: 1.5rem;
+}
+
+.admin-form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--dark-blue);
+    font-weight: 600;
+}
+
+.admin-form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.admin-form-input:focus {
+    border-color: var(--gold);
+    outline: none;
+    box-shadow: 0 0 10px rgba(225, 160, 43, 0.3);
+}
+
+.admin-form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+/* لوحة التحكم الرئيسية */
+.admin-dashboard {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--white);
+    z-index: 10000;
+    overflow-y: auto;
+    padding: 2rem;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--light-gray);
+}
+
+.admin-title {
+    color: var(--dark-blue);
+    font-size: 2rem;
+}
+
+.admin-close {
+    background: var(--dark-gray);
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.admin-close:hover {
+    background: #555;
+}
+
+.admin-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+
+.admin-tab {
+    padding: 10px 20px;
+    background: var(--light-gray);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.admin-tab.active {
+    background: var(--gold);
+    color: var(--white);
+}
+
+.admin-content {
+    display: none;
+}
+
+.admin-content.active {
+    display: block;
+}
+
+.admin-form {
+    background: var(--light-gray);
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+}
+
+.admin-form h3 {
+    margin-bottom: 1.5rem;
+    color: var(--dark-blue);
+}
+
+.admin-item {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.admin-item-info h4 {
+    color: var(--dark-blue);
+    margin-bottom: 0.5rem;
+}
+
+.admin-item-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.admin-item-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.admin-item-edit {
+    background: var(--dark-blue);
+    color: var(--white);
+}
+
+.admin-item-delete {
+    background: #e74c3c;
+    color: var(--white);
+}
