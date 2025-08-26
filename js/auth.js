@@ -28,19 +28,31 @@ function initLoginDropdown() {
     const loginDropdownLink = document.getElementById('login-dropdown-link');
     
     if (loginDropdownLink) {
-        loginDropdownLink.addEventListener('click', function(e) {
+        // إزالة أي event listeners موجودة مسبقاً
+        loginDropdownLink.replaceWith(loginDropdownLink.cloneNode(true));
+        const newLoginLink = document.getElementById('login-dropdown-link');
+        
+        newLoginLink.addEventListener('click', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             
+            console.log('تم النقر على زر تسجيل الدخول في القائمة');
             const isLoggedIn = localStorage.getItem('malekArtLoggedIn') === 'true';
             
             if (isLoggedIn) {
-                // إذا كان المستخدم مسجلاً بالفعل، قم بتسجيل الخروج
                 if (confirm('هل تريد تسجيل الخروج؟')) {
-                    logout();
+                    localStorage.removeItem('malekArtLoggedIn');
+                    updateLoginDropdownText();
+                    
+                    // إغلاق لوحة التحكم إذا كانت مفتوحة
+                    const adminDashboard = document.getElementById('adminDashboard');
+                    if (adminDashboard) {
+                        adminDashboard.style.display = 'none';
+                    }
+                    
                     alert('تم تسجيل الخروج بنجاح');
                 }
             } else {
-                // إذا لم يكن مسجلاً، اعرض نافذة تسجيل الدخول
                 const adminLoginModal = document.getElementById('adminLoginModal');
                 if (adminLoginModal) {
                     adminLoginModal.style.display = 'flex';
@@ -48,9 +60,6 @@ function initLoginDropdown() {
             }
         });
     }
-    
-    // تحديث نص وعرض زر التسجيل/التسجيل الخروج
-    updateLoginDropdownText();
 }
 
 // التحقق من بيانات تسجيل الدخول
@@ -89,11 +98,38 @@ function checkLoginStatus() {
     return isLoggedIn;
 }
 
+// دالة لفتح لوحة التحكم بعد التسجيل
+function openAdminDashboard() {
+    const adminDashboard = document.getElementById('adminDashboard');
+    if (adminDashboard) {
+        adminDashboard.style.display = 'block';
+        console.log('تم فتح لوحة التحكم');
+        
+        // تحميل محتوى لوحة التحكم إذا كانت الدالة متوفرة
+        if (typeof loadAdminPanel === 'function') {
+            loadAdminPanel();
+        }
+        
+        // تهيئة لوحة التحكم إذا كانت الدالة متوفرة
+        if (typeof initAdminPanel === 'function') {
+            initAdminPanel();
+        }
+    } else {
+        console.log('لوحة التحكم غير موجودة');
+    }
+}
+
 // تسجيل الدخول
 function login(username, password) {
     if (validateLogin(username, password)) {
         localStorage.setItem('malekArtLoggedIn', 'true');
         console.log('تم تسجيل الدخول بنجاح');
+        
+        // تحديث واجهة المستخدم
+        checkLoginStatus();
+        
+        // فتح لوحة التحكم
+        openAdminDashboard();
         
         // إطلاق event لإعلام المكونات الأخرى
         const event = new Event('loginSuccess');
@@ -140,13 +176,7 @@ function initAuthSystem() {
             
             if (login(username, password)) {
                 if (adminLoginModal) adminLoginModal.style.display = 'none';
-                checkLoginStatus();
                 alert('تم تسجيل الدخول بنجاح!');
-                
-                // تحميل لوحة التحكم إذا كانت متوفرة
-                if (typeof initAdminPanel === 'function') {
-                    initAdminPanel();
-                }
             } else {
                 alert('اسم المستخدم أو كلمة المرور غير صحيحة!');
             }
@@ -208,6 +238,7 @@ function initAuthSystem() {
 window.checkLoginStatus = checkLoginStatus;
 window.login = login;
 window.logout = logout;
+window.openAdminDashboard = openAdminDashboard;
 window.testLogin = function() {
     console.log('اختبار تسجيل الدخول...');
     const success = login('m711kart', 'Ma775672439#');
@@ -223,6 +254,7 @@ if (typeof module !== 'undefined' && module.exports) {
         checkLoginStatus,
         login,
         logout,
-        initAuthSystem
+        initAuthSystem,
+        openAdminDashboard
     };
 }
