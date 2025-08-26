@@ -1,8 +1,57 @@
-// ملف js/auth.js - نسخة معدلة
+// بيانات الاعتماد الثابتة
 const ADMIN_CREDENTIALS = {
     username: 'm711kart',
     password: 'Ma775672439#'
 };
+
+// تحديث نص وعرض عناصر القائمة
+function updateLoginDropdownText() {
+    const loginDropdownLink = document.getElementById('login-dropdown-link');
+    const dashboardLink = document.getElementById('dashboard-link');
+    const isLoggedIn = localStorage.getItem('malekArtLoggedIn') === 'true';
+    
+    if (loginDropdownLink) {
+        if (isLoggedIn) {
+            loginDropdownLink.innerHTML = '<i class="fas fa-sign-out-alt"></i> تسجيل الخروج';
+        } else {
+            loginDropdownLink.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
+        }
+    }
+    
+    if (dashboardLink) {
+        dashboardLink.style.display = isLoggedIn ? 'block' : 'none';
+    }
+}
+
+// إدارة زر تسجيل الدخول في القائمة
+function initLoginDropdown() {
+    const loginDropdownLink = document.getElementById('login-dropdown-link');
+    
+    if (loginDropdownLink) {
+        loginDropdownLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const isLoggedIn = localStorage.getItem('malekArtLoggedIn') === 'true';
+            
+            if (isLoggedIn) {
+                // إذا كان المستخدم مسجلاً بالفعل، قم بتسجيل الخروج
+                if (confirm('هل تريد تسجيل الخروج؟')) {
+                    logout();
+                    alert('تم تسجيل الخروج بنجاح');
+                }
+            } else {
+                // إذا لم يكن مسجلاً، اعرض نافذة تسجيل الدخول
+                const adminLoginModal = document.getElementById('adminLoginModal');
+                if (adminLoginModal) {
+                    adminLoginModal.style.display = 'flex';
+                }
+            }
+        });
+    }
+    
+    // تحديث نص وعرض زر التسجيل/التسجيل الخروج
+    updateLoginDropdownText();
+}
 
 // التحقق من بيانات تسجيل الدخول
 function validateLogin(username, password) {
@@ -33,6 +82,10 @@ function checkLoginStatus() {
         if (adminPanel) adminPanel.style.display = 'none';
         console.log('المستخدم غير مسجل، إخفاء عناصر التحكم');
     }
+    
+    // تحديث نص وعرض عناصر القائمة
+    updateLoginDropdownText();
+    
     return isLoggedIn;
 }
 
@@ -56,13 +109,24 @@ function login(username, password) {
 function logout() {
     localStorage.removeItem('malekArtLoggedIn');
     console.log('تم تسجيل الخروج');
+    
+    // تحديث واجهة المستخدم
     checkLoginStatus();
+    
+    // إغلاق لوحة التحكم إذا كانت مفتوحة
+    const adminDashboard = document.getElementById('adminDashboard');
+    if (adminDashboard) {
+        adminDashboard.style.display = 'none';
+    }
 }
 
 // تهيئة نظام المصادقة
 function initAuthSystem() {
     console.log('تهيئة نظام المصادقة...');
     const isLoggedIn = checkLoginStatus();
+    
+    // تهيئة زر تسجيل الدخول في القائمة
+    initLoginDropdown();
     
     // إضافة event listeners للنموذج
     const adminLoginBtn = document.getElementById('adminLoginBtn');
@@ -105,6 +169,11 @@ function initAuthSystem() {
             if (checkLoginStatus()) {
                 adminDashboard.style.display = 'block';
                 console.log('فتح لوحة التحكم من الرابط');
+                
+                // تحميل لوحة التحكم إذا كانت متوفرة
+                if (typeof initAdminPanel === 'function') {
+                    initAdminPanel();
+                }
             }
         });
     }
@@ -117,6 +186,11 @@ function initAuthSystem() {
                 if (adminDashboard) {
                     adminDashboard.style.display = 'block';
                     console.log('فتح لوحة التحكم مباشرة');
+                    
+                    // تحميل لوحة التحكم إذا كانت متوفرة
+                    if (typeof initAdminPanel === 'function') {
+                        initAdminPanel();
+                    }
                 }
             } else {
                 if (adminLoginModal) {
@@ -134,6 +208,13 @@ function initAuthSystem() {
 window.checkLoginStatus = checkLoginStatus;
 window.login = login;
 window.logout = logout;
+window.testLogin = function() {
+    console.log('اختبار تسجيل الدخول...');
+    const success = login('m711kart', 'Ma775672439#');
+    console.log('نتيجة الاختبار:', success);
+    checkLoginStatus();
+    return success;
+};
 
 // تصدير الدوال للاستخدام في ملفات أخرى
 if (typeof module !== 'undefined' && module.exports) {
