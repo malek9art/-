@@ -127,7 +127,7 @@ function loadContent() {
             servicesGrid.innerHTML += `
                 <div class="service-card">
                     <div class="service-icon"><i class="${service.icon}"></i></div>
-                    <h3 class="service-title">${service.title}</h3>
+                    <h3 class="service-title">${service.title</h3>
                     <p>${service.description}</p>
                 </div>
             `;
@@ -274,19 +274,31 @@ function initContactForm() {
     }
 }
 
+// إعادة تحميل المحتوى عند تسجيل الدخول
+function initLoginListener() {
+    window.addEventListener('loginSuccess', function() {
+        console.log('تم تسجيل الدخول، إعادة تحميل المحتوى إذا لزم الأمر');
+        // يمكن إضافة أي تحديثات إضافية هنا عند تسجيل الدخول
+    });
+}
+
 // تهيئة جميع مكونات الموقع
 function initWebsite() {
+    console.log('تهيئة موقع مالك أرت...');
     initializeSiteData();
     loadContent();
     initNavigation();
     initAnimations();
     initSmoothScrolling();
     initContactForm();
+    initLoginListener();
     
-    // تهيئة نظام المصادقة
+    // تهيئة نظام المصادقة وزر التسجيل في القائمة
     if (typeof initAuthSystem === 'function') {
         initAuthSystem();
     }
+    
+    console.log('تم تهيئة الموقع بنجاح');
 }
 
 // تشغيل التهيئة عند تحميل الصفحة
