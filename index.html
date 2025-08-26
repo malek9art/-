@@ -292,5 +292,122 @@
     <script src="js/auth.js"></script>
     <script src="js/main.js"></script>
     <script src="js/admin.js"></script>
+<script>
+// كود التصحيح والتحقق من المشاكل
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('=== بدء التحقق من المشاكل ===');
+    
+    // التحقق من وجود العناصر الأساسية
+    const elementsToCheck = [
+        'login-dropdown-link', 'adminLoginModal', 'adminBtn',
+        'username', 'password', 'adminLoginBtn'
+    ];
+    
+    elementsToCheck.forEach(id => {
+        const element = document.getElementById(id);
+        console.log(`${id}: ${element ? 'موجود' : 'غير موجود'}`);
+        if (element) {
+            console.log(`  - النص: ${element.textContent || element.value}`);
+            console.log(`  - العرض: ${element.style.display}`);
+        }
+    });
+    
+    // التحقق من حالة localStorage
+    console.log('malekArtLoggedIn:', localStorage.getItem('malekArtLoggedIn'));
+    console.log('malekArtData:', localStorage.getItem('malekArtData') ? 'موجود' : 'غير موجود');
+    
+    // إضافة event listener يدوي للتحقق
+    const loginDropdownLink = document.getElementById('login-dropdown-link');
+    if (loginDropdownLink) {
+        loginDropdownLink.addEventListener('click', function(e) {
+            console.log('تم النقر على زر تسجيل الدخول في القائمة');
+            e.preventDefault();
+            
+            const isLoggedIn = localStorage.getItem('malekArtLoggedIn') === 'true';
+            console.log('حالة التسجيل:', isLoggedIn);
+            
+            if (isLoggedIn) {
+                console.log('محاولة تسجيل الخروج');
+                if (confirm('هل تريد تسجيل الخروج؟')) {
+                    localStorage.removeItem('malekArtLoggedIn');
+                    alert('تم تسجيل الخروج بنجاح');
+                    location.reload();
+                }
+            } else {
+                console.log('فتح نافذة تسجيل الدخول');
+                const adminLoginModal = document.getElementById('adminLoginModal');
+                if (adminLoginModal) {
+                    adminLoginModal.style.display = 'flex';
+                }
+            }
+        });
+    }
+    
+    // إضافة event listener يدوي لنموذج تسجيل الدخول
+    const adminLoginBtn = document.getElementById('adminLoginBtn');
+    if (adminLoginBtn) {
+        adminLoginBtn.addEventListener('click', function() {
+            console.log('تم النقر على زر تسجيل الدخول في النافذة');
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            console.log('محاولة تسجيل دخول:', username);
+            
+            if (username === 'm711kart' && password === 'Ma775672439#') {
+                localStorage.setItem('malekArtLoggedIn', 'true');
+                console.log('تم تسجيل الدخول بنجاح');
+                
+                // إغلاق نافذة التسجيل
+                const adminLoginModal = document.getElementById('adminLoginModal');
+                if (adminLoginModal) {
+                    adminLoginModal.style.display = 'none';
+                }
+                
+                // تحديث الواجهة
+                const loginDropdownLink = document.getElementById('login-dropdown-link');
+                const dashboardLink = document.getElementById('dashboard-link');
+                const adminPanel = document.querySelector('.admin-panel');
+                
+                if (loginDropdownLink) {
+                    loginDropdownLink.innerHTML = '<i class="fas fa-sign-out-alt"></i> تسجيل الخروج';
+                }
+                if (dashboardLink) {
+                    dashboardLink.style.display = 'block';
+                }
+                if (adminPanel) {
+                    adminPanel.style.display = 'block';
+                }
+                
+                alert('تم تسجيل الدخول بنجاح!');
+            } else {
+                console.log('فشل تسجيل الدخول');
+                alert('اسم المستخدم أو كلمة المرور غير صحيحة!');
+            }
+        });
+    }
+    
+    // زر اختبار للتسجيل المباشر
+    const testBtn = document.createElement('button');
+    testBtn.textContent = 'اختبار التسجيل';
+    testBtn.style.position = 'fixed';
+    testBtn.style.top = '10px';
+    testBtn.style.left = '10px';
+    testBtn.style.zIndex = '10000';
+    testBtn.style.padding = '10px';
+    testBtn.style.background = '#e74c3c';
+    testBtn.style.color = 'white';
+    testBtn.style.border = 'none';
+    testBtn.style.borderRadius = '5px';
+    testBtn.onclick = function() {
+        console.log('اختبار تسجيل الدخول التلقائي');
+        localStorage.setItem('malekArtLoggedIn', 'true');
+        alert('تم تسجيل الدخول تجريبياً. سيتم إعادة تحميل الصفحة');
+        location.reload();
+    };
+    document.body.appendChild(testBtn);
+    
+    console.log('=== انتهاء التحقق ===');
+});
+        </script>
 </body>
 </html>
