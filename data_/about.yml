@@ -1,1 +1,9 @@
-
+title: "مطور ومنسق مشاريع رقمية"
+description: "أنا مالك، مطور ومنسق مشاريع رقمية أبتكر حلولاً محاسبية وأكاديمية مبتكرة"
+skills:
+  - name: "تصميم الهوية البصرية"
+    percentage: 95
+    icon: "fas fa-palette"
+  - name: "مواد التسويق"
+    percentage: 90
+    icon: "fas fa-bullhorn"
